@@ -1,9 +1,9 @@
 create table accounts (
 	id int not null auto_increment,
-	full_name varchar (255) not null,
 	email varchar (255) not null,
 	username varchar (255) not null,
 	password_hash varchar(75) not null,
+	password_salt varchar(75) not null,
 	primary key(id)
 );	
 
@@ -23,7 +23,7 @@ create table lyrics (
 create table userlyrics (
 	id int not null auto_increment,
 	user_id int not null references accounts(id),
-	song_id int not null references lyrics(id)
+	song_id int not null references lyrics(id),
 	primary key(id)
 );	
 
