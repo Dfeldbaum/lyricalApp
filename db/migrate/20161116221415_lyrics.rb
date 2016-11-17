@@ -7,7 +7,7 @@ class Lyrics < ActiveRecord::Migration[5.0]
   		table.string :year
   		table.string :image
   		table.integer :user_id
-  		add_foreign_key :accounts, :id
+      add_foreign_key :accounts, :id
   		end 
   end
 end
