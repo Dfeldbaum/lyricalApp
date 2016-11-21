@@ -18,8 +18,25 @@ class ApplicationController < Sinatra::Base
 	set :allow_origin, :any
 	set :allow_methods, [:get, :post, :options]
 
+	# options "*" do
+	# 	response.headers["Allow"] = "HEAD,GET,PUT,POST,DELETE,OPTIONS"
+	# 	response.headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Cache-Control, Accept"
+	# 	200
+	# end
+
+	options "*" do
+	  response.headers["Allow"] = "HEAD,GET,PUT,DELETE,OPTIONS"
+
+	  # Needed for AngularJS
+	  response.headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Cache-Control, Accept"
+
+	  halt HTTP_STATUS_OK
+	end
+
+
+
 	configure do
-  	enable :cross_origin
+  		enable :cross_origin
 	end
 
 
@@ -48,8 +65,10 @@ class ApplicationController < Sinatra::Base
 	def does_user_exist?(username)
 		user = Account.find_by(:username => username.to_s)
 		if user
+			p 'user is true'
 			return true
 		else
+			p 'user is false'
 			return false
 		end
 	end

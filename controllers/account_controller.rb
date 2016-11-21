@@ -1,5 +1,7 @@
 class AccountController < ApplicationController
 
+	@username = ''
+
 	get '/' do
 		Account.all.to_json
 
@@ -16,23 +18,35 @@ class AccountController < ApplicationController
 
 	post '/register' do
 
-		@username = params[:username]
-		@email = params[:email]
+		p params
+
+		p '----------------------------------------------------------'
+
+		username = params[:username]
+		p @username
+		email = params[:email]
 		@password = params[:password]
 
+		
 
-		password_salt = BCrypt::Engine.generate_salt
-		password_hash = BCrypt::Engine.hash_secret(@password, password_salt)
 
-		@model = Account.new
-		@model.username = @username
-		@model.email = @email
-		@model.password_hash = password_hash
-		@model.password_salt = password_salt
-		@model.save
+		if does_user_exist?(username) == true
+            'User already exists'
+        else    
+			
+			password_salt = BCrypt::Engine.generate_salt
+			password_hash = BCrypt::Engine.hash_secret(@password, password_salt)
 
-		session[:user] = @model
-		@username = session[:user][:username]
+			@model = Account.new
+			@model.username = username
+			@model.email = email
+			@model.password_hash = password_hash
+			@model.password_salt = password_salt
+			@model.save
+
+			session[:user] = @model
+			'User does not exist'
+        end
 
 	end
 
@@ -40,22 +54,31 @@ class AccountController < ApplicationController
 
 	post '/login' do
 
+		p params
+
+		p '----------------------------------------------------------'
+
 		@username = params[:username]
+		p @username
 		@password = params[:password]
 
-		@model = Account.where(:username => @username).first!
-		if @model.password_hash == BCrypt::Engine.hash_secret(@password, @model.password_salt)
-			@account_message = "Welcome back!"
-			session[:user] = @model
-
-			@username = session[:user][:username]
-
-			# return erb :login_notice
-		else
-			@account_message = "Sorry, you password did not match. Try again?"
-			# return erb :login_notice
-		end
-
+		if does_user_exist?(@username) == false
+            
+            	@account_message = "Sorry, that username does not exist. Please register or try again"
+				return {:message => @account_message}.to_json
+        else  
+	        @model = Account.where(:username => @username).first
+	        @pw = BCrypt::Engine.hash_secret(params[:password], @model.password_salt)
+	        if @pw == @model.password_hash
+				@account_message = "Welcome back!"
+				session[:user] = @model
+				return {:message => @account_message, :key => 'lasjljasldkja'}.to_json
+			# if @model.password_hash == BCrypt::Engine.hash_secret(@password, @model.password_salt)
+			else
+				@account_message = "Sorry, you password did not match. Try again?"
+				return {:message => @account_message}.to_json
+			end
+        end
 	end 
 
 

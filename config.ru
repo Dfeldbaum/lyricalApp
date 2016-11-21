@@ -16,3 +16,18 @@ require './models/userlyrics'
 map ('/') { run ApplicationController } 
 map ('/account') { run AccountController }
 map ('/dashboard') { run LyricsController }
+
+
+
+before '/*' do
+  puts "Route Log:"
+  puts request.host
+  puts params
+  puts request.path
+end
+
+after '/*' do
+  puts 'Completed Route Log:'
+  puts response.body
+  puts response.status
+end
