@@ -8,6 +8,7 @@ class LyricsController < ApplicationController
 	get '/:id' do
 
 		@id = params[:id]
+	
 		Lyrics.find(@id).to_json
 	
 	end
@@ -37,8 +38,6 @@ class LyricsController < ApplicationController
 
 		session[:user] = @model
 		@username = session[:user][:username]
-
-
 
 	end
 
