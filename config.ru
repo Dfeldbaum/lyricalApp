@@ -4,6 +4,7 @@ require 'sinatra/base'
 require './controllers/application_controller'
 require './controllers/account_controller'
 require './controllers/lyrics_controller'
+require './controllers/userlyrics_controller'
 
 #models
 require './models/accounts'
@@ -16,7 +17,7 @@ require './models/userlyrics'
 map ('/') { run ApplicationController } 
 map ('/account') { run AccountController }
 map ('/dashboard') { run LyricsController }
-
+map ('/userlyrics') { run UserLyricsController }
 
 
 before '/*' do

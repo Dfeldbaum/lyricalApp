@@ -1,6 +1,6 @@
 class Userlyrics <  ActiveRecord::Base
 	self.table_name = "userlyrics"
 
-	belongs_to :account
-	belongs_to :lyrics
+	has_many :accounts
+	has_many :lyrics
 end	

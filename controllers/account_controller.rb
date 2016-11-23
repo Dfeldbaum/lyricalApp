@@ -22,15 +22,15 @@ class AccountController < ApplicationController
 
 		p '----------------------------------------------------------'
 
-		username = params[:username]
+		@username = params[:username]
 		p @username
-		email = params[:email]
+		@email = params[:email]
 		@password = params[:password]
 
 		
 
 
-		if does_user_exist?(username) == true
+		if does_user_exist?(@username) == true
             'User already exists'
         else    
 			
@@ -38,8 +38,8 @@ class AccountController < ApplicationController
 			password_hash = BCrypt::Engine.hash_secret(@password, password_salt)
 
 			@model = Account.new
-			@model.username = username
-			@model.email = email
+			@model.username = @username
+			@model.email = @email
 			@model.password_hash = password_hash
 			@model.password_salt = password_salt
 			@model.save
@@ -72,7 +72,7 @@ class AccountController < ApplicationController
 	        if @pw == @model.password_hash
 				@account_message = "Welcome back!"
 				session[:user] = @model
-				return {:message => @account_message, :key => 'lasjljasldkja'}.to_json
+				return {:message => @account_message, :key => @model.id}.to_json
 			# if @model.password_hash == BCrypt::Engine.hash_secret(@password, @model.password_salt)
 			else
 				@account_message = "Sorry, you password did not match. Try again?"
@@ -91,4 +91,15 @@ class AccountController < ApplicationController
 	
 
 
-end		
+end
+
+
+
+
+
+
+
+
+
+
+
