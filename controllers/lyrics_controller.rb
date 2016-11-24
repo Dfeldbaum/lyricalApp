@@ -1,17 +1,16 @@
 class LyricsController < ApplicationController
 
 	get '/' do
-		Lyric.all.to_json
+		Lyrics.all.to_json
 	end 
 
 	get '/:id' do
 
 		@id = params[:id]
 	
-		Lyric.find(@id).to_json
+		Lyrics.find(@id).to_json
 	
 	end
-
 
 
 	post '/createlyrics' do
@@ -25,7 +24,7 @@ class LyricsController < ApplicationController
 		@user_id = params[:user_id]
 
 
-		@model = Lyric.new
+		@model = Lyrics.new
 		@model.artist = @artist
 		@model.song = @song
 		@model.lyrics = @lyrics
@@ -53,7 +52,7 @@ class LyricsController < ApplicationController
 
 
 
-		@model = Lyric.find(@id)
+		@model = Lyrics.find(@id)
 		@model.artist = @artist
 		@model.song = @song
 		@model.lyrics = @lyrics

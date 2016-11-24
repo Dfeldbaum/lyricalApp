@@ -9,7 +9,6 @@ class UserLyricsController < ApplicationController
     @user_id = params[:id]
     @users_lyrics = Userlyrics.where(:user_id => @user_id)
 
-    binding.pry
 
     # loop through @userlyrics
     # get the .user_id
@@ -32,8 +31,6 @@ class UserLyricsController < ApplicationController
 
     @user_id = params[:user_id]
     @song_id = params[:song_id]
-
-    binding.pry
 
 
     @model = Userlyrics.new
