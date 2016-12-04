@@ -1,6 +1,7 @@
 class LyricsController < ApplicationController
 
 	get '/' do
+
 		Lyrics.all.to_json
 	end 
 
@@ -22,6 +23,7 @@ class LyricsController < ApplicationController
 		@genre = params[:genre]
 		@image = params[:image]
 		@user_id = params[:user_id]
+		@album = params[:album]
 
 
 		@model = Lyrics.new
@@ -30,8 +32,9 @@ class LyricsController < ApplicationController
 		@model.lyrics = @lyrics
 		@model.year = @year
 		@model.genre = @genre
-		@model.image = @genre
-		@model.user_id = @genre
+		@model.image = @image
+		@model.user_id = @user_id
+		@model.album = @album
 		@model.save
 
 		session[:user] = @model
@@ -69,7 +72,12 @@ class LyricsController < ApplicationController
 
 	end
 
-
+	delete '/:id' do
+		@id = params[:id]
+		@model = Lyrics.find(@id)
+		@model.destroy
+		{:message => "item has been destroyed"}.to_json
+	end
 
 
 
